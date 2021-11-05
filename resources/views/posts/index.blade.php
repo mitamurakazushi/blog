@@ -12,17 +12,5 @@
             <p class='body'>{{ $post->body }}</p>
         @endforeach    
         </div>
-        <div>
-            <h3>記事タイトル1</h3>
-            <p>本文1</p>
-        </div>
-        <div>
-            <h3>記事タイトル2</h3>
-            <p>本文2</p>
-        </div>
-        <div>
-            <h3>記事タイトル3</h3>
-            <p>本文3</p>
-        </div>
     </body>
 </html>
