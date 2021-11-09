@@ -8,7 +8,7 @@
         <h1>ブログタイトル</h1>
         <div>
             @foreach ($posts as $post)
-                <h3 class='title'>{{ $post->title }}</h3>
+                <a href="/posts/{{ $post->id }}}">{{ $post->title }}</a>
                 <p class='body'>{{ $post->body }}</p>
             @endforeach    
         </div>
