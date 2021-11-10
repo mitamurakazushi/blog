@@ -11,10 +11,12 @@
                 <a href="/">一覧へ</a>
             </div>
             <div>
-                <input type="text" name="post[title]" placeholder="記事タイトル">
+                <input type="text" name="post[title]" placeholder="記事タイトル" value="{{ old('post.title') }}"/>
+                <p>{{ $errors->first('post.title') }}</p>
             </div>
             <div>
-                <textarea name="post[body]" placeholder="本文"></textarea>
+                <textarea name="post[body]" placeholder="本文" value="{{ old('post.body') }}"/></textarea>
+                <p>{{ $errors->first('post.body') }}</p>
             </div>
             <input type="submit" value="保存"/>
     </body>
