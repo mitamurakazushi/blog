@@ -6,6 +6,7 @@
     </head>
     <body>
         <h1>ブログタイトル</h1>
+        [<a href='/posts/create'>create</a>]
         <div>
             @foreach ($posts as $post)
                 <a href="/posts/{{ $post->id }}}">{{ $post->title }}</a>
