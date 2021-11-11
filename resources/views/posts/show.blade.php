@@ -12,6 +12,8 @@
             <h1 class='title'>{{ $post->title }}</h1>
             <p class='body'>{{ $post->body }}</p>
         </div>
-        
+        <div class="return index">
+                <a href="/posts/{{ $post->id }}/edit">編集</a>
+        </div>
     </body>
 </html>
