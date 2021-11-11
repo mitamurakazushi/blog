@@ -2,10 +2,10 @@
 <html lang="ja">
     <head>
         <meta charset="UTF-8">
-        <title>ブログタイトル</title>
+        <title>一覧ページ</title>
     </head>
     <body>
-        <h1>ブログタイトル</h1>
+        <h1>一覧ページ</h1>
         [<a href='/posts/create'>create</a>]
         <div>
             @foreach ($posts as $post)

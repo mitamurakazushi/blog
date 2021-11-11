@@ -10,6 +10,7 @@
             <div class="return index">
                 <a href="/">戻る</a>
             </div>
+            <h1>作成ページ</h1>
             <div>
                 <input type="text" name="post[title]" placeholder="記事タイトル" value="{{ old('post.title') }}"/>
                 <p>{{ $errors->first('post.title') }}</p>
