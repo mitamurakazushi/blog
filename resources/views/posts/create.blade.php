@@ -8,7 +8,7 @@
         <form action="/posts" method="POST">
             @csrf
             <div class="return index">
-                <a href="/">一覧へ</a>
+                <a href="/">戻る</a>
             </div>
             <div>
                 <input type="text" name="post[title]" placeholder="記事タイトル" value="{{ old('post.title') }}"/>
@@ -19,5 +19,6 @@
                 <p>{{ $errors->first('post.body') }}</p>
             </div>
             <input type="submit" value="保存"/>
+        </form>
     </body>
 </html>
