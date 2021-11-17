@@ -17,7 +17,7 @@
                 <p>{{ $errors->first('post.title') }}</p>
             </div>
             <div>
-                <textarea name="post[body]" placeholder="本文" value="{{ $post->body }}"/></textarea>
+                <textarea name="post[body]" placeholder="本文" >{{ $post->body }}</textarea>
                 <p>{{ $errors->first('post.body') }}</p>
             </div>
             <input type="submit" value="保存"/>
