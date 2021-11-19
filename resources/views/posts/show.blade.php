@@ -13,6 +13,7 @@
         </div>
         <div>
             <h1 class='title'>{{ $post->title }}</h1>
+            <small>{{ $post->user->name }}</small>
             <p class='body'>{{ $post->body }}</p>
         </div>
         <div class="return index">
