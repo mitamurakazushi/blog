@@ -11,10 +11,14 @@
     <body>
         <h1>一覧ページ</h1>
         [<a href='/posts/create'>作成</a>]
+        [<a href='/user'>自分の投稿一覧</a>]
         <div>
             @foreach ($posts as $post)
                 <div style="border: solid 1px black; padding: 16px;">
                 <a href="/posts/{{ $post->id }}}">{{ $post->title }}</a>
+                <div>
+                <small>{{ $post->user->name }}</small>
+                </div>
                 <p class='body'>{{ $post->body }}</p>
                 <form action="/posts/{{ $post->id }}" id="delete_form" method="POST">
                     @csrf
