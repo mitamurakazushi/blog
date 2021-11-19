@@ -1,6 +1,10 @@
+@extends('layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="ja">
     <head>
+        <p>{{Auth::user()->name}}</p>
         <meta charset="UTF-8">
         <title>一覧ページ</title>
     </head>
@@ -34,3 +38,4 @@
         </script>
     </body>
 </html>
+@endsection
