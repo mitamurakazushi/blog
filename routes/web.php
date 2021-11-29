@@ -19,7 +19,9 @@ Route::group(['middleware' => 'auth'], function(){
     Route::put('/posts/{post}', 'PostController@update');
     Route::delete('/posts/{post}', 'PostController@delete');
     Route::get('/posts/{post}/edit', 'PostController@edit');
-    Route::get('/user', 'UserController@index');
+    Route::get('/user/posts', 'UserController@postindex');
+    Route::get('/user/locations', 'UserController@locationindex');
+    Route::post('/locations', 'LocationController@store');
 });
 
 

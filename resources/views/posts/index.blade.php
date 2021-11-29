@@ -11,7 +11,12 @@
     <body>
         <h1>一覧ページ</h1>
         [<a href='/posts/create'>作成</a>]
-        [<a href='/user'>自分の投稿一覧</a>]
+        [<a href='/user/posts'>自分の投稿一覧</a>]
+        [<a href='/user/locations'>自分の位置履歴</a>]
+        <form action="/locations" method="POST">
+                    @csrf
+                    <button type="button" onclick="loc()">位置情報取得</button>
+        </form>
         <div>
             @foreach ($posts as $post)
                 <div style="border: solid 1px black; padding: 16px;">
@@ -38,7 +43,15 @@
                 if (confirm("削除しますか？")){
                 document.getElementById("delete_form").submit();
                 }
-            }    
+            }
+            function loc() {
+                navigator.geolocation.getCurrentPosition(loc2);
+            }
+            function loc2(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+                console.log(lon);
+            }
         </script>
     </body>
 </html>

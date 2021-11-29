@@ -41,8 +41,16 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Post');  
     }
+    public function locations()
+    {
+        return $this->hasMany('App\Location');  
+    }
     public function getOwnPaginateByLimit(int $limit_count = 5)
     {
     return $this::with('posts')->find(Auth::id())->posts()->orderBy('updated_at', 'DESC')->paginate($limit_count);
+    }
+    public function getOwnLocationPaginateByLimit(int $limit_count = 5)
+    {
+    return $this::with('locations')->find(Auth::id())->locations()->orderBy('updated_at', 'DESC')->paginate($limit_count);
     }
 }
