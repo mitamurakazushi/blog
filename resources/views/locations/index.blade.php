@@ -17,7 +17,8 @@
             @foreach ($own_locations as $location)
                 <div style="border: solid 1px black; padding: 16px;">
                 <p>{{ $location->id }}</p>
-                <p class='body'>{{ $post->latitude }},{{ $location->longitude }}</p>
+                <p class='body'>緯度：{{ $location->latitude }}，経度：{{ $location->longitude }}</p>
+                <p>時刻：{{ $location->created_at }}</p>
                 </div>
             @endforeach    
         </div>

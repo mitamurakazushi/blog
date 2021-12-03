@@ -12,7 +12,7 @@ class UserController extends Controller
     {
         return view('User.index')->with(['own_posts' => $user->getOwnPaginateByLimit()]);
     }
-    public function locationindex(Location $location)
+    public function locationindex(User $user)
     {
         return view('locations.index')->with(['own_locations' => $user->getOwnLocationPaginateByLimit()]);
     }
