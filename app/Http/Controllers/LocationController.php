@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Location;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 
@@ -12,11 +12,12 @@ class LocationController extends Controller
     {
         return view('locations.index')->with(['own_locations' => $location->getLocationPaginateByLimit()]);
     }
-    public function store(PostRequest $request, Location $location)
+    public function store(Request $request, Location $location)
     {
-        $input = $request['location'];
+        $input = ['latitude' => $request->latitude];
+        $input += ['longitude' => $request->longitude];
         $input += ['user_id' => $request->user()->id];
-        $post->fill($input)->save();
+        $location->fill($input)->save();
         return redirect('/');
     }
 }
