@@ -20,6 +20,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::delete('/posts/{post}', 'PostController@delete');
     Route::get('/posts/{post}/edit', 'PostController@edit');
     Route::get('/user/posts', 'UserController@postindex');
+    Route::get('/user/mymap', 'UserController@mymap');
     Route::get('/user/locations', 'UserController@locationindex');
     Route::post('/locations', 'LocationController@store');
 });

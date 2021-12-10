@@ -21,7 +21,8 @@ window.Vue = require('vue');
 
 /*global Vue*/
 // これを追加していく
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('getlocation-component', require('./components/getLocationComponent.vue').default);
+Vue.component('mymap-component', require('./components/MyMapComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

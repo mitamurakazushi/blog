@@ -6,13 +6,17 @@
     <head>
         <p>{{Auth::user()->name}}</p>
         <meta charset="UTF-8">
-        <title>自分の位置履歴</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <title>位置履歴マップ</title>
     </head>
     <body>
+        <h1>位置履歴マップ</h1>
         <div class="return index">
                 <a href="/">トップページへ</a>
         </div>
-        <h1>自分の位置履歴</h1>
+        <div id="app">
+            <mymap-component></mymap-component>
+        </div>
         <div>
             @foreach ($own_locations as $location)
                 <div style="border: solid 1px black; padding: 16px;">
@@ -21,9 +25,6 @@
                 <p>時刻：{{ $location->created_at }}</p>
                 </div>
             @endforeach    
-        </div>
-            <div class='paginate'>
-            {{ $own_locations->links() }}
         </div>
     </body>
 </html>
