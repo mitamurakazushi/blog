@@ -1,40 +1,54 @@
 <template>
-    <div>
-        <button @click="getPosition">位置情報取得</button>
-        <p>緯度：{{ locations.latitude }}</p>
-        <p>経度：{{ locations.longitude }}</p>
+    <div class="row justify-content-center">
+    <gmap-map
+      :center="center"
+      :zoom="12"
+      style="width:100%;  height: 400px;"
+    >
+      <gmap-marker
+        :key="location.id"
+        v-for="location in locations"
+        :position="{lat: location.latitude, lng: location.longitude}"
+        @click="center={lat: location.latitude, lng: location.longitude}"
+      ></gmap-marker>
+    </gmap-map>
     </div>
 </template>
-
+ 
 <script>
 export default {
-    data: () => {
-        return {
-            locations: {
-                latitude: null,
-                longitude: null
-            }
-        }
-    },
-    methods: {
-        getPosition: function() {
-            /*global navigator*/
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    this.locations.latitude = position.coords.latitude;
-                    this.locations.longitude = position.coords.longitude;
-                    console.log(this.locations.latitude,this.locations.longitude);
-                }.bind(this)
-            );
-            /*global axios*/
-            axios.post("/locations",{
-                latitude: this.locations.latitude,
-                longitude: this.locations.longitude
-                }
-            )
-            .then(response => this.locations.unshift(response.data))
-            .catch(error => console.log(error));
-        }
+  props: ["locations"],
+  name: "GoogleMap",
+  data() {
+    return {
+      center: { lat: 0, lng: 0 },
+      currentPlace: null
+    };
+  },
+  props: {
+    locations: {
+      required: true
     }
-}
+  },
+ 
+ /*初期中心位置を現在地に*/
+  mounted() {
+    this.geolocate();
+  },
+ 
+  methods: {
+    setPlace(place) {
+      this.currentPlace = place;
+    },
+    geolocate: function() {
+        /*global navigator*/
+        navigator.geolocation.getCurrentPosition(position => {
+          this.center = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+        });
+    }
+  }
+};
 </script>

@@ -15,16 +15,7 @@
                 <a href="/">トップページへ</a>
         </div>
         <div id="app">
-            <mymap-component></mymap-component>
-        </div>
-        <div>
-            @foreach ($own_locations as $location)
-                <div style="border: solid 1px black; padding: 16px;">
-                <p>{{ $location->id }}</p>
-                <p class='body'>緯度：{{ $location->latitude }}，経度：{{ $location->longitude }}</p>
-                <p>時刻：{{ $location->created_at }}</p>
-                </div>
-            @endforeach    
+            <mymap-component v-bind:locations="{{$own_locations}}"></mymap-component>
         </div>
     </body>
 </html>
