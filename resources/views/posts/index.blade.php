@@ -7,15 +7,16 @@
         <p>{{Auth::user()->name}}</p>
         <meta charset="UTF-8">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>一覧ページ</title>
+        <title>トップページ</title>
     </head>
     <body>
-        <h1>一覧ページ</h1>
+        <h1>トップページ</h1>
         [<a href='/posts/create'>作成</a>]
         [<a href='/user/posts'>自分の投稿一覧</a>]
         [<a href='/user/locations'>自分の位置履歴</a>]
+        [<a href='/user/mymap'>位置履歴マップ</a>]
         <div id="app">
-            <example-component></example-component>
+            <getlocation-component></getlocation-component>
         </div>
         <div>
             @foreach ($posts as $post)

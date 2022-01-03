@@ -8,6 +8,17 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+/*vue2-google-map利用のため*/
+import * as VueGoogleMaps from 'vue2-google-maps';
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyC297ZrxaC2dPfcejad1u_m0z6qaM1oNv4',
+    libraries: 'places'
+  },
+  installComponents: true
+});
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -21,7 +32,8 @@ window.Vue = require('vue');
 
 /*global Vue*/
 // これを追加していく
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('getlocation-component', require('./components/getLocationComponent.vue').default);
+Vue.component('mymap-component', require('./components/MyMapComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

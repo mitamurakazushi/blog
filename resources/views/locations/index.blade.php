@@ -10,7 +10,7 @@
     </head>
     <body>
         <div class="return index">
-                <a href="/">全体の記事一覧へ</a>
+                <a href="/">トップページへ</a>
         </div>
         <h1>自分の位置履歴</h1>
         <div>

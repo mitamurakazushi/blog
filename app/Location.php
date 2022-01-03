@@ -9,7 +9,7 @@ class Location extends Model
 {
     public function getLocationPaginateByLimit(int $limit_count = 5)
     {
-    return $this::with('user')->orderBy('updated_at', 'DESC')->paginate($limit_count);
+        return $this::with('user')->orderBy('updated_at', 'DESC')->paginate($limit_count);
     }
     protected $fillable = ['latitude', 'longitude', 'user_id'];
     public function user()
