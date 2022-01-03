@@ -1935,8 +1935,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       center: {
-        lat: 0,
-        lng: 0
+        lat: 35.605,
+        lng: 139.683889
       },
       currentPlace: null
     };

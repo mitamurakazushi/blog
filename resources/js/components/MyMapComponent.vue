@@ -21,7 +21,7 @@ export default {
   name: "GoogleMap",
   data() {
     return {
-      center: { lat: 0, lng: 0 },
+      center: { lat: 35.605, lng: 139.683889 },
       currentPlace: null
     };
   },
