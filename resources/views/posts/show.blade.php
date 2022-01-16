@@ -9,12 +9,14 @@
     </head>
     <body>
          <div class="return index">
-            <a href="/">一覧へ</a>
+            <a href="/">トップページへ</a>
         </div>
         <div>
             <h1 class='title'>{{ $post->title }}</h1>
             <small>{{ $post->user->name }}</small>
-            <p class='body'>{{ $post->body }}</p>
+            <h2 class='body'>{{ $post->body }}</h2>
+            <p class='category'>category : {{ $post->category }}</p>
+            <img src="{{ $post->image }}" />
         </div>
         <div class="return index">
                 <a href="/posts/{{ $post->id }}/edit">編集</a>

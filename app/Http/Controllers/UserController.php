@@ -18,6 +18,16 @@ class UserController extends Controller
     }
     public function mymap(User $user)
     {
-        return view('locations.mymap')->with(['own_locations' => $user->getOwnLocation()]);
+        return view('locations.mymap')->with(['all_posts' => $user->getAllPosts()]);
+    }
+    public function mymapsearch(Request $request, User $user)
+    {
+        $category = $request->category;
+        if($category=="all"){
+            return view('locations.mymap')->with(['all_posts' => $user->getAllPosts()]);
+        }
+        else{
+            return view('locations.mymap')->with(['all_posts' => $user->getAllPosts()->where('category', $category)]);
+        }
     }
 }
