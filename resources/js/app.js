@@ -9,11 +9,12 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 /*vue2-google-map利用のため*/
+import Vue from 'vue'
 import * as VueGoogleMaps from 'vue2-google-maps';
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyC297ZrxaC2dPfcejad1u_m0z6qaM1oNv4',
+    key: process.env.MIX_VUE_APP_GOOGLE_MAPS_API_KEY,
     libraries: 'places'
   },
   installComponents: true
@@ -34,6 +35,7 @@ Vue.use(VueGoogleMaps, {
 // これを追加していく
 Vue.component('getlocation-component', require('./components/getLocationComponent.vue').default);
 Vue.component('mymap-component', require('./components/MyMapComponent.vue').default);
+Vue.component('submit-component', require('./components/submitComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

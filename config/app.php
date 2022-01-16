@@ -120,6 +120,8 @@ return [
     */
 
     'key' => env('APP_KEY'),
+    
+    'gmapkey' => env('MIX_VUE_APP_GOOGLE_MAPS_API_KEY','error'),
 
     'cipher' => 'AES-256-CBC',
 

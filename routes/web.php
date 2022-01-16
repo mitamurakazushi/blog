@@ -21,8 +21,11 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/posts/{post}/edit', 'PostController@edit');
     Route::get('/user/posts', 'UserController@postindex');
     Route::get('/user/mymap', 'UserController@mymap');
+    Route::get('/user/mymap/search', 'UserController@mymapsearch');
     Route::get('/user/locations', 'UserController@locationindex');
     Route::post('/locations', 'LocationController@store');
+    Route::get('env', function () {
+    return view('env');});
 });
 
 

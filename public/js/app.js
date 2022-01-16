@@ -1929,8 +1929,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = (_props$name$data$prop = {
-  props: ["locations"],
+  props: ["posts"],
   name: "GoogleMap",
   data: function data() {
     return {
@@ -1938,11 +1949,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         lat: 35.605,
         lng: 139.683889
       },
-      currentPlace: null
+      currentPlace: null,
+      infoOptions: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        },
+        content: null
+      },
+      infoWindowPos: null,
+      infoWinOpen: false
     };
   }
 }, _defineProperty(_props$name$data$prop, "props", {
-  locations: {
+  posts: {
     required: true
   }
 }), _defineProperty(_props$name$data$prop, "mounted", function mounted() {
@@ -1961,6 +1981,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         lng: position.coords.longitude
       };
     });
+  },
+  toggleInfoWindow: function toggleInfoWindow(post) {
+    this.infoWindowPos = {
+      lat: post.latitude,
+      lng: post.longitude
+    };
+    this.infoWinOpen = true;
+
+    if (post.image) {
+      this.infoOptions.content = '<a href="/posts/' + post.id + '" style="font-size: 15pt;">' + post.title + '</a>' + '<h3>' + post.body + '</h3>' + '<p>' + "category : " + post.category + '</p>' + '<img src="' + post.image + '" />';
+    } else {
+      this.infoOptions.content = '<a href="/posts/' + post.id + '" style="font-size: 15pt;">' + post.title + '</a>' + '<h3>' + post.body + '</h3>' + '<p>' + "category : " + post.category + '</p>';
+    }
   }
 }), _props$name$data$prop);
 
@@ -2012,6 +2045,105 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error);
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/submitComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/submitComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      locations: {
+        latitude: null,
+        longitude: null
+      },
+      title: null,
+      body: null,
+      category: null,
+      image: null,
+      complete_script: null
+    };
+  },
+  methods: {
+    selectedFile: function selectedFile(e) {
+      // 選択された File の情報を保存しておく
+      e.preventDefault();
+      var files = e.target.files;
+      this.image = files[0];
+    },
+    getPosition: function getPosition() {
+      /*global navigator*/
+      navigator.geolocation.getCurrentPosition(function (position) {
+        this.locations.latitude = position.coords.latitude;
+        this.locations.longitude = position.coords.longitude;
+        console.log("get position");
+      }.bind(this));
+    },
+    timelate: function timelate() {
+      setTimeout(this.submitdata, 5000);
+    },
+    submitdata: function submitdata() {
+      // 画像を送信する旨のheaders情報
+      var config = {
+        header: {
+          "Content-Type": "multipart/form-data"
+        }
+      }; //画像を送信する時は、FormDataを使う。
+
+      var formData = new FormData(); //appendの第一引数がkey、第二引数がデータ
+
+      formData.append("title", this.title);
+      formData.append("body", this.body);
+      formData.append("category", this.category);
+      formData.append("latitude", this.locations.latitude);
+      formData.append("longitude", this.locations.longitude);
+
+      if (this.image) {
+        formData.append("image", this.image);
+      }
+
+      formData.append("iconurl", "https://photo2gmap.s3.ap-northeast-1.amazonaws.com/icon/" + this.category + ".png");
+      /*global axios*/
+
+      axios.post("/posts", formData, config).then(console.log("submit complete"), this.complete_script = "投稿完了！");
     }
   }
 });
@@ -38550,28 +38682,47 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "row justify-content-center" },
     [
       _c(
-        "gmap-map",
+        "GmapMap",
         {
           staticStyle: { width: "100%", height: "400px" },
           attrs: { center: _vm.center, zoom: 12 },
         },
-        _vm._l(_vm.locations, function (location) {
-          return _c("gmap-marker", {
-            key: location.id,
+        [
+          _c("GmapInfoWindow", {
             attrs: {
-              position: { lat: location.latitude, lng: location.longitude },
+              options: _vm.infoOptions,
+              position: _vm.infoWindowPos,
+              opened: _vm.infoWinOpen,
             },
             on: {
-              click: function ($event) {
-                _vm.center = { lat: location.latitude, lng: location.longitude }
+              closeclick: function ($event) {
+                _vm.infoWinOpen = false
               },
             },
-          })
-        }),
-        1
+          }),
+          _vm._v(" "),
+          _vm._l(_vm.posts, function (post) {
+            return _c("GmapMarker", {
+              key: post.id,
+              attrs: {
+                position: { lat: post.latitude, lng: post.longitude },
+                icon: {
+                  url: post.iconurl,
+                  scaledSize: { width: 32, height: 36 },
+                },
+                clickable: true,
+              },
+              on: {
+                click: function ($event) {
+                  return _vm.toggleInfoWindow(post)
+                },
+              },
+            })
+          }),
+        ],
+        2
       ),
     ],
     1
@@ -38605,6 +38756,140 @@ var render = function () {
     _c("p", [_vm._v("緯度：" + _vm._s(_vm.locations.latitude))]),
     _vm._v(" "),
     _c("p", [_vm._v("経度：" + _vm._s(_vm.locations.longitude))]),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/submitComponent.vue?vue&type=template&id=53ec71ca&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/submitComponent.vue?vue&type=template&id=53ec71ca& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("p", [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.title,
+            expression: "title",
+          },
+        ],
+        attrs: { type: "text", placeholder: "タイトル" },
+        domProps: { value: _vm.title },
+        on: {
+          input: function ($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.title = $event.target.value
+          },
+        },
+      }),
+    ]),
+    _vm._v(" "),
+    _c("p", [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.body,
+            expression: "body",
+          },
+        ],
+        attrs: { type: "text", placeholder: "本文" },
+        domProps: { value: _vm.body },
+        on: {
+          input: function ($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.body = $event.target.value
+          },
+        },
+      }),
+    ]),
+    _vm._v(" "),
+    _c("p", [
+      _vm._v("\n        カテゴリー：\n        "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.category,
+              expression: "category",
+            },
+          ],
+          on: {
+            change: function ($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function (o) {
+                  return o.selected
+                })
+                .map(function (o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.category = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            },
+          },
+        },
+        [
+          _c("option", { attrs: { value: "text" } }, [_vm._v("メモ")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "music" } }, [_vm._v("音楽")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "photo" } }, [_vm._v("写真")]),
+        ]
+      ),
+    ]),
+    _vm._v(" "),
+    _c("p", [
+      _vm._v("\n        写真：\n        "),
+      _c("input", {
+        attrs: { type: "file", name: "file" },
+        on: { change: _vm.selectedFile },
+      }),
+    ]),
+    _vm._v(" "),
+    _c("p", [
+      _c(
+        "button",
+        {
+          on: {
+            click: function ($event) {
+              _vm.getPosition()
+              _vm.timelate()
+            },
+          },
+        },
+        [_vm._v("投稿")]
+      ),
+    ]),
+    _vm._v(" "),
+    _c("h1", [_vm._v(_vm._s(_vm.complete_script))]),
   ])
 }
 var staticRenderFns = []
@@ -53368,8 +53653,10 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue2_google_maps__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-google-maps */ "./node_modules/vue2-google-maps/dist/main.js");
-/* harmony import */ var vue2_google_maps__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue2_google_maps__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue2_google_maps__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue2-google-maps */ "./node_modules/vue2-google-maps/dist/main.js");
+/* harmony import */ var vue2_google_maps__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue2_google_maps__WEBPACK_IMPORTED_MODULE_1__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -53381,9 +53668,10 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 /*vue2-google-map利用のため*/
 
 
-Vue.use(vue2_google_maps__WEBPACK_IMPORTED_MODULE_0__, {
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTED_MODULE_1__, {
   load: {
-    key: 'AIzaSyC297ZrxaC2dPfcejad1u_m0z6qaM1oNv4',
+    key: "AIzaSyDbHTnfzUUmCHZ1mmoMuH9NnjV4or_9_kk",
     libraries: 'places'
   },
   installComponents: true
@@ -53401,15 +53689,16 @@ Vue.use(vue2_google_maps__WEBPACK_IMPORTED_MODULE_0__, {
 /*global Vue*/
 // これを追加していく
 
-Vue.component('getlocation-component', __webpack_require__(/*! ./components/getLocationComponent.vue */ "./resources/js/components/getLocationComponent.vue")["default"]);
-Vue.component('mymap-component', __webpack_require__(/*! ./components/MyMapComponent.vue */ "./resources/js/components/MyMapComponent.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('getlocation-component', __webpack_require__(/*! ./components/getLocationComponent.vue */ "./resources/js/components/getLocationComponent.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('mymap-component', __webpack_require__(/*! ./components/MyMapComponent.vue */ "./resources/js/components/MyMapComponent.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('submit-component', __webpack_require__(/*! ./components/submitComponent.vue */ "./resources/js/components/submitComponent.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-var app = new Vue({
+var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app'
 });
 
@@ -53593,6 +53882,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_getLocationComponent_vue_vue_type_template_id_72f7f3dd___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_getLocationComponent_vue_vue_type_template_id_72f7f3dd___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/submitComponent.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/submitComponent.vue ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _submitComponent_vue_vue_type_template_id_53ec71ca___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./submitComponent.vue?vue&type=template&id=53ec71ca& */ "./resources/js/components/submitComponent.vue?vue&type=template&id=53ec71ca&");
+/* harmony import */ var _submitComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./submitComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/submitComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _submitComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _submitComponent_vue_vue_type_template_id_53ec71ca___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _submitComponent_vue_vue_type_template_id_53ec71ca___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/submitComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/submitComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/submitComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_submitComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./submitComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/submitComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_submitComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/submitComponent.vue?vue&type=template&id=53ec71ca&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/submitComponent.vue?vue&type=template&id=53ec71ca& ***!
+  \************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_submitComponent_vue_vue_type_template_id_53ec71ca___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./submitComponent.vue?vue&type=template&id=53ec71ca& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/submitComponent.vue?vue&type=template&id=53ec71ca&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_submitComponent_vue_vue_type_template_id_53ec71ca___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_submitComponent_vue_vue_type_template_id_53ec71ca___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

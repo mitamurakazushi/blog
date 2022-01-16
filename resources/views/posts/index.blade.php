@@ -10,43 +10,20 @@
         <title>トップページ</title>
     </head>
     <body>
+        <p>{{ config('app.gmapkey') }}</p>
         <h1>トップページ</h1>
-        [<a href='/posts/create'>作成</a>]
-        [<a href='/user/posts'>自分の投稿一覧</a>]
-        [<a href='/user/locations'>自分の位置履歴</a>]
-        [<a href='/user/mymap'>位置履歴マップ</a>]
-        <div id="app">
-            <getlocation-component></getlocation-component>
+        <div>
+        [<a href='/posts/create' style="font-size: 30pt";>投稿</a>]
         </div>
         <div>
-            @foreach ($posts as $post)
-                <div style="border: solid 1px black; padding: 16px;">
-                <a href="/posts/{{ $post->id }}}">{{ $post->title }}</a>
-                <div>
-                <small>{{ $post->user->name }}</small>
-                </div>
-                <p class='body'>{{ $post->body }}</p>
-                <form action="/posts/{{ $post->id }}" id="delete_form" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" onclick="del()">削除</button>
-                </form>
-                <p></p>
-                </div>
-            @endforeach    
+        [<a href='/user/posts' style="font-size: 30pt";>投稿一覧</a>]
         </div>
-            <div class='paginate'>
-            {{ $posts->links() }}
+        <!--
+        [<a href='/user/locations'>自分の位置履歴</a>]
+        -->
+        <div>
+        [<a href='/user/mymap' style="font-size: 30pt";>マップ</a>]
         </div>
-        <script>
-            function del(){
-                'use strict';
-                if (confirm("削除しますか？")){
-                document.getElementById("delete_form").submit();
-                }
-            }
-            src="{{ mix('js/app.js') }}"
-        </script>
     </body>
 </html>
 @endsection
